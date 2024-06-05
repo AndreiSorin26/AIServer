@@ -1,14 +1,17 @@
 from SQLSyntaxer import SQLSyntaxer
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 sql_syntaxer = SQLSyntaxer()
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return jsonify(message='Hello, World!')
+
+@app.route('/get_syntax', methods=['POST'])
+def get_syntax():
+    text_query = request.json['text_query']
+    return jsonify(translated_query=sql_syntaxer.translate(text_query)), 200
+
 
 if __name__ == '__main__':
     app.run()
